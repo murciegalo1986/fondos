@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fondos Chile — Encuentra tu financiamiento</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,300;1,500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2eb;
+    --bg2: #edeadf;
+    --white: #faf8f3;
+    --ink: #1a1a14;
+    --ink2: #3a3a2e;
+    --muted: #7a7a68;
+    --dim: #a8a898;
+    --border: #d8d4c8;
+    --border2: #c8c4b4;
+    --green: #1a6b3c;
+    --green2: #2a8a50;
+    --green-light: #e8f4ee;
+    --green-pale: #f0f8f3;
+    --gold: #b8860b;
+    --gold-light: #fdf6e3;
+    --red: #c0392b;
+    --red-light: #fdf0ee;
+    --blue: #1a4a7a;
+    --blue-light: #e8f0f8;
+    --purple: #5a2d7a;
+    --purple-light: #f3eef8;
+    --orange: #c45c1a;
+    --orange-light: #fdf3ec;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding: 48px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-left {}
+
+  .flag-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+
+  .flag-line {
+    width: 24px;
+    height: 2px;
+    background: var(--green);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--green);
+  }
+
+  .header-sub {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 420px;
+    font-weight: 300;
+  }
+
+  .header-stat {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--green);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ── QUIZ ── */
+  #quiz-wrapper { padding: 48px 0 80px; }
+
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .progress-text {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .progress-pct {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: 0.1em;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 3px;
+    margin-bottom: 40px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    background: var(--white);
+    border: 1.5px solid var(--border2);
+    border-radius: 4px;
+    padding: 44px 48px;
+    animation: slideIn 0.35s ease both;
+    box-shadow: 4px 4px 0 var(--border);
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .q-eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .q-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3.5vw, 30px);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  .q-hint {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    font-style: italic;
+  }
+
+  /* ── OPTIONS ── */
+  .opts-grid { display: grid; gap: 10px; }
+  .opts-grid.two { grid-template-columns: 1fr 1fr; }
+
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: left;
+    font-family: 'IBM Plex Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .opt::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0;
+    background: var(--green);
+    transition: width 0.18s ease;
+  }
+
+  .opt:hover {
+    border-color: var(--green);
+    background: var(--green-pale);
+    transform: translateX(3px);
+  }
+
+  .opt.selected {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
+
+  .opt.selected::before { width: 3px; }
+
+  .opt-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .opt-body { position: relative; z-index: 1; }
+
+  .opt-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .opt-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* ── NAV ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    gap: 12px;
+  }
+
+  .btn-back {
+    background: none;
+    border: 1.5px solid var(--border2);
+    color: var(--muted);
+    padding: 12px 24px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: all 0.18s;
+  }
+
+  .btn-back:hover {
+    border-color: var(--ink2);
+    color: var(--ink);
+  }
+
+  .btn-next {
+    background: var(--green);
+    color: #fff;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.18s;
+    margin-left: auto;
+    box-shadow: 3px 3px 0 var(--green2);
+  }
+
+  .btn-next:hover {
+    background: var(--green2);
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--green);
+  }
+
+  .btn-next:disabled {
+    background: var(--border);
+    color: var(--dim);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* ── LOADING ── */
+  #loading-screen {
+    text-align: center;
+    padding: 80px 20px;
+    animation: slideIn 0.4s ease both;
+  }
+
+  .loading-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+
+  .loading-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .loading-sub {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── RESULTS ── */
+  #results-screen { animation: slideIn 0.4s ease both; }
+
+  .results-top {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+  }
+
+  .results-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+
+  .results-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .perfil-box {
+    background: var(--white);
+    border-left: 3px solid var(--green);
+    padding: 16px 20px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  .camino-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 8px 18px;
+    border-radius: 2px;
+    margin-top: 16px;
+  }
+
+  /* ── TRACK SECTION ── */
+  .track-block {
+    margin-bottom: 48px;
+  }
+
+  .track-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1.5px solid var(--border2);
+  }
+
+  .track-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .track-info { flex: 1; }
+
+  .track-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .track-count {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .track-match-pill {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ── FONDO CARD ── */
+  .fondo-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    padding: 28px 32px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .fondo-card:hover {
+    box-shadow: 4px 4px 0 var(--border2);
+    transform: translate(-2px, -2px);
+  }
+
+  .fondo-card-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .fondo-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .fondo-nombre {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+
+  .fondo-org {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .match-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+
+  .fondo-desc {
+    font-size: 13px;
+    color: var(--ink2);
+    line-height: 1.7;
+    margin-bottom: 18px;
+    font-weight: 300;
+  }
+
+  .fondo-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .chip {
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    background: var(--bg);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  .chip.monto { border-color: var(--gold); color: var(--gold); background: var(--gold-light); }
+  .chip.plazo { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+  .chip.tipo { border-color: var(--green); color: var(--green); background: var(--green-pale); }
+
+  .fondo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: gap 0.2s;
+  }
+
+  .fondo-link:hover { gap: 10px; }
+
+  /* MATCH COLORS */
+  .match-alto { background: #e8f4ee; color: #1a6b3c; }
+  .match-medio { background: #fdf6e3; color: #b8860b; }
+  .match-bajo { background: #f8f8f4; color: #7a7a68; }
+
+  /* TRACK THEMES */
+  .t-corfo .track-icon { background: #e8f4ee; }
+  .t-corfo .track-match-pill { background: #e8f4ee; color: var(--green); }
+  .t-corfo .fondo-card-stripe { background: var(--green); }
+  .t-corfo .fondo-link { color: var(--green); }
+
+  .t-cultura .track-icon { background: var(--purple-light); }
+  .t-cultura .track-match-pill { background: var(--purple-light); color: var(--purple); }
+  .t-cultura .fondo-card-stripe { background: var(--purple); }
+  .t-cultura .fondo-link { color: var(--purple); }
+
+  .t-social .track-icon { background: var(--blue-light); }
+  .t-social .track-match-pill { background: var(--blue-light); color: var(--blue); }
+  .t-social .fondo-card-stripe { background: var(--blue); }
+  .t-social .fondo-link { color: var(--blue); }
+
+  .t-ciencia .track-icon { background: var(--orange-light); }
+  .t-ciencia .track-match-pill { background: var(--orange-light); color: var(--orange); }
+  .t-ciencia .fondo-card-stripe { background: var(--orange); }
+  .t-ciencia .fondo-link { color: var(--orange); }
+
+  .t-regional .track-icon { background: var(--red-light); }
+  .t-regional .track-match-pill { background: var(--red-light); color: var(--red); }
+  .t-regional .fondo-card-stripe { background: var(--red); }
+  .t-regional .fondo-link { color: var(--red); }
+
+  /* ── DISCLAIMER + RESTART ── */
+  .disclaimer {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    padding: 20px 24px;
+    margin-top: 48px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .btn-restart {
+    display: block;
+    margin: 24px auto 0;
+    background: none;
+    border: 1.5px solid var(--border2);
+    color: var(--muted);
+    padding: 12px 32px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.18s;
+  }
+
+  .btn-restart:hover {
+    border-color: var(--ink2);
+    color: var(--ink);
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 600px) {
+    .opts-grid.two { grid-template-columns: 1fr; }
+    .q-card { padding: 28px 20px; }
+    .fondo-card { padding: 20px 18px; }
+    .header-stat { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="flag-tag"><div class="flag-line"></div>Chile · Financiamiento Público y Privado</div>
+        <h1>¿A qué fondo<br>debería <em>postular</em>?</h1>
+        <p class="header-sub">Responde 7 preguntas sobre tu proyecto e idea. Te mostramos los fondos concursables reales a los que puedes postular en Chile.</p>
+      </div>
+      <div class="header-stat">
+        <div class="stat-number">40+</div>
+        <div class="stat-label">Fondos en base<br>de datos</div>
+      </div>
+    </div>
+  </header>
+
+  <div id="quiz-wrapper">
+    <div id="progress-wrap" class="hidden">
+      <div class="progress-row">
+        <span class="progress-text" id="prog-text">Pregunta 1 de 7</span>
+        <span class="progress-pct" id="prog-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="quiz-screen"></div>
+
+    <div id="loading-screen" class="hidden">
+      <div class="loading-icon">🗺️</div>
+      <div class="loading-title">Mapeando tu proyecto…</div>
+      <div class="loading-sub">Cruzando tu perfil con la base de datos de fondos chilenos</div>
+    </div>
+
+    <div id="results-screen" class="hidden"></div>
+  </div>
+</div>
+
+<script>
+// ──────────────────────────────────────────────
+// PREGUNTAS
+// ──────────────────────────────────────────────
+const PREGUNTAS = [
+  {
+    id: 'ambito',
+    titulo: '¿En qué ámbito está tu proyecto o idea?',
+    hint: 'El sector define gran parte de los fondos disponibles.',
+    tipo: 'opciones',
+    opciones: [
+      { icon: '🚀', label: 'Emprendimiento / Empresa', desc: 'Negocio, startup, Pyme, producto o servicio comercial', val: 'empresa' },
+      { icon: '🎨', label: 'Arte y Cultura', desc: 'Música, artes visuales, cine, literatura, patrimonio', val: 'cultura' },
+      { icon: '🔬', label: 'Ciencia e Innovación', desc: 'Investigación, tecnología, I+D, innovación técnica', val: 'ciencia' },
+      { icon: '🤝', label: 'Social y Comunitario', desc: 'ONG, proyecto social, comunidad, vulnerabilidad', val: 'social' },
+      { icon: '🌿', label: 'Medio Ambiente', desc: 'Sustentabilidad, reciclaje, energía, territorio', val: 'ambiente' },
+      { icon: '📚', label: 'Educación', desc: 'Iniciativas educativas, metodologías, acceso', val: 'educacion' },
+    ]
+  },
+  {
+    id: 'etapa',
+    titulo: '¿En qué etapa está tu proyecto?',
+    hint: 'Algunos fondos son solo para ideas; otros exigen trayectoria.',
+    tipo: 'opciones',
+    dos: true,
+    opciones: [
+      { icon: '💡', label: 'Solo tengo la idea', desc: 'Todavía en papel o en mi cabeza', val: 'idea' },
+      { icon: '🌱', label: 'Empezando', desc: 'Primeros pasos, sin mucha tracción aún', val: 'inicio' },
+      { icon: '📈', label: 'En desarrollo', desc: 'Ya funciona, busco crecer', val: 'desarrollo' },
+      { icon: '🏆', label: 'Consolidado', desc: 'Tiene historia, resultados y reconocimiento', val: 'consolidado' },
+    ]
+  },
+  {
+    id: 'tipo_entidad',
+    titulo: '¿Quién postula al fondo?',
+    hint: 'Tu condición jurídica limita o amplía las opciones.',
+    tipo: 'opciones',
+    dos: true,
+    opciones: [
+      { icon: '👤', label: 'Persona natural', desc: 'Postulas como individuo, sin empresa', val: 'persona' },
+      { icon: '🏢', label: 'Empresa / Pyme', desc: 'Tienes RUT de empresa o eres socio', val: 'empresa' },
+      { icon: '🌐', label: 'ONG / Fundación', desc: 'Organización sin fines de lucro', val: 'ong' },
+      { icon: '🔬', label: 'Universidad / Centro', desc: 'Institución académica o de investigación', val: 'academia' },
+    ]
+  },
+  {
+    id: 'monto',
+    titulo: '¿Cuánto financiamiento necesitas aproximadamente?',
+    hint: 'Cada fondo tiene montos máximos y mínimos muy distintos.',
+    tipo: 'opciones',
+    dos: true,
+    opciones: [
+      { icon: '🟡', label: 'Hasta $3 millones', desc: 'Proyectos pequeños, primeros pasos', val: 'micro' },
+      { icon: '🟠', label: '$3M a $20 millones', desc: 'Proyectos medianos en desarrollo', val: 'pequeno' },
+      { icon: '🔴', label: '$20M a $100 millones', desc: 'Proyectos grandes con estructura', val: 'mediano' },
+      { icon: '⚫', label: 'Más de $100 millones', desc: 'Proyectos de alto impacto o escala', val: 'grande' },
+    ]
+  },
+  {
+    id: 'zona',
+    titulo: '¿Tu proyecto tiene alcance regional o nacional?',
+    hint: 'Hay fondos exclusivos para regiones específicas.',
+    tipo: 'opciones',
+    dos: true,
+    opciones: [
+      { icon: '📍', label: 'Mi región/ciudad', desc: 'Impacto local o regional específico', val: 'regional' },
+      { icon: '🇨🇱', label: 'Todo Chile', desc: 'Alcance o beneficio nacional', val: 'nacional' },
+      { icon: '🌎', label: 'Internacional', desc: 'Proyección fuera de Chile', val: 'internacional' },
+      { icon: '🤷', label: 'No lo tengo claro aún', desc: 'Por definir', val: 'indefinido' },
+    ]
+  },
+  {
+    id: 'plazo',
+    titulo: '¿Cuándo necesitas el financiamiento?',
+    hint: 'Los concursos tienen calendarios fijos; hay que planificar.',
+    tipo: 'opciones',
+    dos: true,
+    opciones: [
+      { icon: '⚡', label: 'Lo antes posible', desc: 'Tengo urgencia o el proyecto no puede esperar', val: 'urgente' },
+      { icon: '📅', label: 'En los próximos 6 meses', desc: 'Tengo tiempo para postular con calma', val: 'semestre' },
+      { icon: '🗓️', label: 'En el próximo año', desc: 'Puedo planificar con anticipación', val: 'anio' },
+      { icon: '🔭', label: 'Es a largo plazo', desc: 'Proyecto de varios años', val: 'largo' },
+    ]
+  },
+  {
+    id: 'objetivo',
+    titulo: '¿Cuál es el objetivo principal del financiamiento?',
+    hint: 'Algunos fondos financian solo ciertos tipos de gastos.',
+    tipo: 'opciones',
+    opciones: [
+      { icon: '🛠️', label: 'Ejecutar el proyecto', desc: 'Pagar materiales, personas, producción', val: 'ejecucion' },
+      { icon: '📊', label: 'Validar la idea', desc: 'Prototipar, testear, hacer piloto', val: 'prototipo' },
+      { icon: '📣', label: 'Difundir y distribuir', desc: 'Llegar a más personas, marketing, giras', val: 'difusion' },
+      { icon: '🎓', label: 'Formarme / capacitarme', desc: 'Financiar estudios o especialización', val: 'formacion' },
+    ]
+  },
+];
+
+// ──────────────────────────────────────────────
+// BASE DE DATOS DE FONDOS
+// ──────────────────────────────────────────────
+const FONDOS = {
+  corfo: {
+    nombre: 'CORFO y Ecosistema Emprendimiento',
+    icon: '🚀',
+    tema: 't-corfo',
+    fondos: {
+      empresa: [
+        { nombre: 'Capital Semilla SERCOTEC', org: 'SERCOTEC', desc: 'Financiamiento no reembolsable para micro y pequeñas empresas. Cubre inversión, capital de trabajo y asistencia técnica. Convocatorias anuales en todo Chile con montos de hasta $3.500.000.', monto: 'Hasta $3.500.000', plazo: 'Convocatorias anuales', tipo: 'No reembolsable', chips: ['Microempresas', 'Todo Chile', 'Sin devolución'], link: 'https://www.sercotec.cl/capital-semilla/', match: 'Alto' },
+        { nombre: 'Start-Up Chile — S Factory', org: 'CORFO', desc: 'Programa de aceleración para startups en etapa temprana. Incluye capital semilla, coworking, mentoría y red de contactos internacionales. Convocatorias abiertas a extranjeros y chilenos.', monto: 'USD $25.000', plazo: '2 convocatorias al año', tipo: 'Capital + programa', chips: ['Startups', 'Inglés opcional', 'Red global'], link: 'https://www.startupchile.org/', match: 'Alto' },
+        { nombre: 'Fondo de Desarrollo de Proveedores — CORFO', org: 'CORFO', desc: 'Para empresas que quieren mejorar su competitividad como proveedores de grandes empresas. Subsidia hasta el 50% de proyectos de mejora productiva, certificaciones y tecnología.', monto: 'Hasta $75.000.000', plazo: 'Postulación permanente', tipo: 'Subsidio 50%', chips: ['Pymes proveedoras', 'Competitividad', 'Permanente'], link: 'https://www.corfo.cl/sites/cpp/programas/fondo_de_desarrollo_de_proveedores', match: 'Medio' },
+      ],
+      ciencia: [
+        { nombre: 'InnovaChile — Proyectos de I+D', org: 'CORFO', desc: 'Subsidios para proyectos de investigación aplicada y desarrollo tecnológico en empresas. Financia entre 50% y 80% del proyecto. Requisito: empresa constituida en Chile.', monto: 'Hasta $400.000.000', plazo: 'Convocatorias abiertas', tipo: 'Subsidio hasta 80%', chips: ['Empresas', 'I+D', 'Alta tecnología'], link: 'https://www.corfo.cl/sites/cpp/innovachile', match: 'Alto' },
+        { nombre: 'Voucher de Innovación — CORFO', org: 'CORFO', desc: 'Bono para que Pymes accedan a servicios de innovación tecnológica de universidades y centros tecnológicos. Simple de postular, montos menores pero proceso ágil.', monto: 'Hasta $9.000.000', plazo: 'Convocatorias periódicas', tipo: 'Bono directo', chips: ['Pymes', 'Acceso a universidades', 'Ágil'], link: 'https://www.corfo.cl/sites/cpp/programas/voucher_innovacion', match: 'Alto' },
+      ],
+      social: [
+        { nombre: 'Fondo Concursable Sociedad Civil — FOSIS', org: 'FOSIS', desc: 'Financia proyectos de organizaciones sociales para reducir la pobreza y mejorar la calidad de vida. Prioriza comunidades vulnerables. Postulación a través de municipios.', monto: 'Hasta $20.000.000', plazo: 'Anuales por región', tipo: 'No reembolsable', chips: ['ONGs', 'Vulnerabilidad', 'Via municipios'], link: 'https://www.fosis.cl/', match: 'Alto' },
+        { nombre: 'Programa Yo Emprendo — FOSIS', org: 'FOSIS', desc: 'Apoyo a personas en situación de pobreza para desarrollar iniciativas económicas propias. Incluye capital semilla, capacitación y acompañamiento. No requiere empresa constituida.', monto: 'Hasta $1.500.000', plazo: 'Convocatorias anuales', tipo: 'Capital + capacitación', chips: ['Personas naturales', 'Sin empresa', 'Acompañamiento'], link: 'https://www.fosis.cl/programas/yo-emprendo/', match: 'Alto' },
+      ],
+      cultura: [
+        { nombre: 'Fondo Emprendimiento Cultural — Mincap', org: 'Ministerio de las Culturas', desc: 'Apoyo a emprendimientos del sector cultural y creativo. Para artistas que quieren profesionalizar su práctica con un enfoque de negocio. Incluye asesoría y capital.', monto: 'Hasta $10.000.000', plazo: 'Anual', tipo: 'No reembolsable', chips: ['Artistas', 'Profesionalización', 'Industria creativa'], link: 'https://fondosdecultura.cl/', match: 'Alto' },
+      ],
+      ambiente: [
+        { nombre: 'Fondo de Protección Ambiental — MMA', org: 'Ministerio del Medio Ambiente', desc: 'Financia proyectos ciudadanos y organizaciones para la protección y recuperación del medio ambiente. Abierto a personas, municipios y organizaciones comunitarias.', monto: 'Hasta $20.000.000', plazo: 'Anual', tipo: 'No reembolsable', chips: ['Ciudadanos', 'Organizaciones', 'Medio ambiente'], link: 'https://www.mma.gob.cl/fondo-de-proteccion-ambiental/', match: 'Alto' },
+      ],
+      educacion: [
+        { nombre: 'Fondo de Innovación Educativa — Mineduc', org: 'Ministerio de Educación', desc: 'Apoya iniciativas innovadoras en establecimientos educacionales. Para docentes y sostenedores que quieran implementar metodologías nuevas o proyectos de inclusión.', monto: 'Variable por proyecto', plazo: 'Convocatorias anuales', tipo: 'Subsidio', chips: ['Establecimientos', 'Docentes', 'Innovación pedagógica'], link: 'https://www.mineduc.cl/', match: 'Alto' },
+      ],
+    }
+  },
+  cultura: {
+    nombre: 'Fondos de Arte y Cultura',
+    icon: '🎨',
+    tema: 't-cultura',
+    fondos: {
+      cultura: [
+        { nombre: 'FONDART Nacional', org: 'Ministerio de las Culturas', desc: 'El fondo más importante para artistas chilenos. Financia creación, investigación, difusión y formación en todas las disciplinas artísticas. Convocatoria anual con múltiples líneas y categorías.', monto: 'Hasta $30.000.000', plazo: 'Convocatoria anual (marzo-abril)', tipo: 'No reembolsable', chips: ['Artistas', 'Todas las disciplinas', 'El más importante'], link: 'https://fondosdecultura.cl/', match: 'Alto' },
+        { nombre: 'FONDART Regional', org: 'Ministerio de las Culturas', desc: 'Similar al FONDART pero con alcance regional. Cada región tiene su propia convocatoria y presupuesto. Ideal para proyectos con impacto local o comunidades específicas.', monto: 'Hasta $15.000.000', plazo: 'Anual por región', tipo: 'No reembolsable', chips: ['Regiones', 'Impacto local', 'Comunidades'], link: 'https://fondosdecultura.cl/', match: 'Alto' },
+        { nombre: 'Fondo del Libro y la Lectura', org: 'Ministerio de las Culturas', desc: 'Financia creación literaria, edición de libros, fomento lector y acceso a la lectura. Tiene líneas para autores, editoras y proyectos de mediación lectora en todo Chile.', monto: 'Hasta $20.000.000', plazo: 'Anual', tipo: 'No reembolsable', chips: ['Literatura', 'Editoriales', 'Fomento lector'], link: 'https://fondosdecultura.cl/', match: 'Medio' },
+        { nombre: 'Fondo de Fomento al Audiovisual', org: 'Ministerio de las Culturas', desc: 'Financia producción, postproducción, distribución y exhibición de cine y video chileno. Incluye líneas para cortometrajes, largometrajes, documentales y animación.', monto: 'Hasta $200.000.000', plazo: 'Anual', tipo: 'No reembolsable', chips: ['Cine', 'Documentales', 'Animación'], link: 'https://fondosdecultura.cl/', match: 'Alto' },
+        { nombre: 'Fondo de la Música', org: 'Ministerio de las Culturas', desc: 'Apoya la creación, producción, difusión e internacionalización de la música chilena. Tiene líneas para grabaciones, giras, videoclips, formación y proyectos colectivos.', monto: 'Hasta $25.000.000', plazo: 'Anual', tipo: 'No reembolsable', chips: ['Músicos', 'Grabaciones', 'Giras y difusión'], link: 'https://fondosdecultura.cl/', match: 'Alto' },
+      ],
+      social: [
+        { nombre: 'Convocatoria Cultura Comunitaria', org: 'Ministerio de las Culturas', desc: 'Para organizaciones y comunidades que quieren desarrollar proyectos culturales con enfoque comunitario y participativo. Sin necesidad de ser artistas profesionales.', monto: 'Hasta $8.000.000', plazo: 'Anual', tipo: 'No reembolsable', chips: ['Comunidades', 'No artistas', 'Participativo'], link: 'https://fondosdecultura.cl/', match: 'Medio' },
+      ],
+      empresa: [
+        { nombre: 'Fondo de Turismo — Sernatur', org: 'Sernatur', desc: 'Financia proyectos que desarrollen el turismo cultural, patrimonial y de naturaleza en Chile. Para empresas, comunidades indígenas y organizaciones con propuesta turística innovadora.', monto: 'Variable', plazo: 'Convocatorias periódicas', tipo: 'Cofinanciamiento', chips: ['Turismo', 'Patrimonio', 'Comunidades indígenas'], link: 'https://www.sernatur.cl/', match: 'Medio' },
+      ],
+    }
+  },
+  social: {
+    nombre: 'Fondos Sociales y Comunitarios',
+    icon: '🤝',
+    tema: 't-social',
+    fondos: {
+      social: [
+        { nombre: 'Fondo Concursable SUBDERE — Desarrollo Regional', org: 'SUBDERE / FNDR', desc: 'El Fondo Nacional de Desarrollo Regional financia proyectos de inversión en todas las regiones de Chile. Incluye infraestructura, desarrollo social, cultura y medioambiente. Postulación vía municipios e instituciones.', monto: 'Sin límite definido', plazo: 'Permanente por región', tipo: 'Inversión pública', chips: ['Via municipios', 'Inversión regional', 'Grande escala'], link: 'https://www.subdere.gov.cl/fndr', match: 'Alto' },
+        { nombre: 'Fondo Mixto de Apoyo Social — SEDESOL', org: 'SENADIS / SEDESOL', desc: 'Financia proyectos de organizaciones sociales que trabajan con personas en situación de discapacidad, adultos mayores y grupos en vulnerabilidad. Ciclos anuales con bases públicas.', monto: 'Hasta $25.000.000', plazo: 'Anual', tipo: 'No reembolsable', chips: ['Discapacidad', 'Adultos mayores', 'ONGs'], link: 'https://www.senadis.gob.cl/', match: 'Alto' },
+        { nombre: 'Fondo de Iniciativas Locales — FIL (Municipios)', org: 'Municipalidades', desc: 'La mayoría de los municipios chilenos tienen fondos concursables propios para organizaciones comunitarias. Montos menores pero con menor competencia. Consulta directamente a tu municipio.', monto: '$500.000 a $5.000.000', plazo: 'Variable por municipio', tipo: 'No reembolsable', chips: ['Organizaciones locales', 'Menor competencia', 'Consultar municipio'], link: 'https://www.munitel.cl/', match: 'Alto' },
+      ],
+      cultura: [
+        { nombre: 'Fondo de Desarrollo Indígena — CONADI', org: 'CONADI', desc: 'Financia proyectos de desarrollo cultural, productivo y social de comunidades indígenas en Chile. Incluye cultura, lengua, territorio y emprendimiento con identidad.', monto: 'Variable', plazo: 'Convocatorias anuales', tipo: 'No reembolsable', chips: ['Comunidades indígenas', 'Cultura', 'Territorio'], link: 'https://www.conadi.gob.cl/', match: 'Medio' },
+      ],
+      ambiente: [
+        { nombre: 'Fondo Social — SENAPRED / Municipios', org: 'SENAPRED', desc: 'Financia proyectos comunitarios de gestión de riesgos y preparación ante desastres naturales. Prioriza comunidades vulnerables en zonas de riesgo identificadas.', monto: 'Variable', plazo: 'Convocatorias periódicas', tipo: 'Subsidio', chips: ['Riesgo natural', 'Comunidades', 'Prevención'], link: 'https://www.senapred.cl/', match: 'Medio' },
+      ],
+    }
+  },
+  ciencia: {
+    nombre: 'Ciencia, Tecnología e Innovación',
+    icon: '🔬',
+    tema: 't-ciencia',
+    fondos: {
+      ciencia: [
+        { nombre: 'FONDECYT Regular — ANID', org: 'ANID', desc: 'El fondo más prestigioso para investigación científica en Chile. Para investigadores con grado de doctor. Financia proyectos de 3-4 años en todas las disciplinas. Muy competitivo pero con montos significativos.', monto: 'Hasta $60.000.000/año', plazo: 'Anual (agosto-septiembre)', tipo: 'No reembolsable', chips: ['Doctores', '3-4 años', 'Muy competitivo'], link: 'https://www.anid.cl/concursos/concurso/?id=541', match: 'Alto' },
+        { nombre: 'FONDECYT Iniciación — ANID', org: 'ANID', desc: 'Para investigadores jóvenes que están comenzando su carrera independiente. Menos requisitos que FONDECYT Regular pero igual de riguroso. Ideal para recién graduados de doctorado.', monto: 'Hasta $30.000.000/año', plazo: 'Anual', tipo: 'No reembolsable', chips: ['Investigadores jóvenes', 'Post-doctorado', 'Carrera independiente'], link: 'https://www.anid.cl/concursos/concurso/?id=543', match: 'Alto' },
+        { nombre: 'FONDEF — Proyectos I+D Aplicada', org: 'ANID', desc: 'Financia proyectos de investigación y desarrollo con aplicación industrial o social directa. Requiere asociación entre universidad y empresa. Muy valorado en minería, salud y tecnología.', monto: 'Hasta $200.000.000', plazo: 'Convocatorias anuales', tipo: 'Subsidio con empresa asociada', chips: ['Universidad + empresa', 'Aplicación industrial', 'Minería y salud'], link: 'https://www.anid.cl/concursos/', match: 'Alto' },
+        { nombre: 'Concurso de Innovación Tecnológica — CORFO', org: 'CORFO', desc: 'Para empresas que desarrollan tecnologías innovadoras con potencial de mercado. Subsidia hasta el 70% del proyecto. Incluye prototipado, validación y escalamiento.', monto: 'Hasta $100.000.000', plazo: 'Permanente', tipo: 'Subsidio hasta 70%', chips: ['Startups tech', 'Prototipado', 'Mercado'], link: 'https://www.corfo.cl/sites/cpp/innovachile', match: 'Alto' },
+      ],
+      empresa: [
+        { nombre: 'Beca Magíster Nacional — ANID', org: 'ANID', desc: 'Financia estudios de magíster en universidades chilenas acreditadas. Cubre arancel, mensualidad y seguro. Para personas con título profesional o licenciatura que quieran hacer investigación o innovación.', monto: 'Arancel + $543.000/mes', plazo: 'Anual (enero-febrero)', tipo: 'Beca de estudios', chips: ['Estudios', 'Postgrado', 'Investigación'], link: 'https://www.anid.cl/capital-humano/', match: 'Medio' },
+      ],
+    }
+  },
+  regional: {
+    nombre: 'Fondos Regionales y Territoriales',
+    icon: '📍',
+    tema: 't-regional',
+    fondos: {
+      todos: [
+        { nombre: 'FIC — Fondo de Innovación para la Competitividad', org: 'GORE (Gobierno Regional)', desc: 'Cada gobierno regional tiene su FIC para financiar proyectos de innovación, ciencia y tecnología con foco regional. Los montos y bases varían por región. Alta relevancia para proyectos territoriales.', monto: 'Variable por región', plazo: 'Anual por región', tipo: 'Subsidio', chips: ['Cada región', 'Innovación territorial', 'Consultar GORE'], link: 'https://www.subdere.gov.cl/', match: 'Alto' },
+        { nombre: 'FNDR — Cultura, Arte y Patrimonio Regional', org: 'SUBDERE / GORE', desc: 'Línea específica del FNDR para proyectos de cultura y patrimonio con impacto regional. Para municipios, organizaciones y personas que trabajen en identidad territorial.', monto: 'Variable', plazo: 'Permanente por región', tipo: 'Inversión regional', chips: ['Cultura regional', 'Patrimonio', 'Via GORE'], link: 'https://www.subdere.gov.cl/fndr', match: 'Alto' },
+        { nombre: 'Programa Territorios en Acción — INDAP', org: 'INDAP', desc: 'Apoya a pequeños agricultores y comunidades rurales con financiamiento para proyectos productivos, innovación agrícola y acceso a mercados. Cubre desde el secano hasta la Patagonia.', monto: 'Hasta $15.000.000', plazo: 'Convocatorias periódicas', tipo: 'Subsidio + asesoría', chips: ['Agricultura', 'Rural', 'Pequeños agricultores'], link: 'https://www.indap.gob.cl/', match: 'Medio' },
+      ],
+    }
+  }
+};
+
+// ──────────────────────────────────────────────
+// LÓGICA
+// ──────────────────────────────────────────────
+let paso = 0;
+let resp = {};
+
+function init() {
+  document.getElementById('progress-wrap').classList.remove('hidden');
+  mostrarPregunta(0);
+}
+
+function mostrarPregunta(idx) {
+  const q = PREGUNTAS[idx];
+  const total = PREGUNTAS.length;
+  const pct = Math.round((idx / total) * 100);
+
+  document.getElementById('prog-text').textContent = `Pregunta ${idx + 1} de ${total}`;
+  document.getElementById('prog-pct').textContent = `${pct}%`;
+  document.getElementById('prog-fill').style.width = `${pct}%`;
+
+  const screen = document.getElementById('quiz-screen');
+  screen.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'q-card';
+
+  const gridClass = q.dos ? 'opts-grid two' : 'opts-grid';
+  const opts = q.opciones.map(op => `
+    <button class="opt ${resp[q.id] === op.val ? 'selected' : ''}"
+            onclick="elegir('${q.id}', '${op.val}', this)">
+      <span class="opt-icon">${op.icon}</span>
+      <span class="opt-body">
+        <div class="opt-label">${op.label}</div>
+        <div class="opt-desc">${op.desc}</div>
+      </span>
+    </button>
+  `).join('');
+
+  card.innerHTML = `
+    <div class="q-eyebrow">Pregunta ${idx + 1} — ${total} en total</div>
+    <div class="q-title">${q.titulo}</div>
+    <div class="q-hint">${q.hint}</div>
+    <div class="${gridClass}">${opts}</div>
+  `;
+
+  screen.appendChild(card);
+
+  const nav = document.createElement('div');
+  nav.className = 'nav-row';
+  nav.innerHTML = `
+    ${idx > 0 ? `<button class="btn-back" onclick="anterior()">← Anterior</button>` : '<span></span>'}
+    <button class="btn-next" id="btn-sig" onclick="siguiente()" ${!resp[q.id] ? 'disabled' : ''}>
+      ${idx === total - 1 ? 'Ver mis fondos →' : 'Siguiente →'}
+    </button>
+  `;
+  screen.appendChild(nav);
+}
+
+function elegir(qId, val, btn) {
+  resp[qId] = val;
+  document.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('btn-sig').disabled = false;
+}
+
+function siguiente() {
+  if (paso < PREGUNTAS.length - 1) {
+    paso++;
+    mostrarPregunta(paso);
+  } else {
+    analizar();
+  }
+}
+
+function anterior() {
+  if (paso > 0) {
+    paso--;
+    mostrarPregunta(paso);
+  }
+}
+
+function analizar() {
+  document.getElementById('quiz-screen').classList.add('hidden');
+  document.getElementById('progress-wrap').classList.add('hidden');
+  document.getElementById('loading-screen').classList.remove('hidden');
+  setTimeout(() => {
+    const resultado = generarResultado(resp);
+    mostrarResultados(resultado);
+  }, 2000);
+}
+
+function generarResultado(r) {
+  const ambito = r.ambito || 'empresa';
+  const etapa = r.etapa || 'inicio';
+  const entidad = r.tipo_entidad || 'persona';
+  const monto = r.monto || 'pequeno';
+  const zona = r.zona || 'nacional';
+  const plazo = r.plazo || 'semestre';
+  const objetivo = r.objetivo || 'ejecucion';
+
+  const ambitoLabels = { empresa: 'emprendimiento', cultura: 'arte y cultura', ciencia: 'ciencia e innovación', social: 'impacto social', ambiente: 'medio ambiente', educacion: 'educación' };
+  const etapaLabels = { idea: 'en etapa de idea', inicio: 'recién comenzando', desarrollo: 'en pleno desarrollo', consolidado: 'con trayectoria' };
+  const entidadLabels = { persona: 'persona natural', empresa: 'empresa/Pyme', ong: 'ONG o fundación', academia: 'institución académica' };
+
+  const perfil_resumen = `Proyecto de ${ambitoLabels[ambito]}, ${etapaLabels[etapa]}, postulando como ${entidadLabels[entidad]}. ${zona === 'regional' ? 'Con alcance territorial regional.' : zona === 'internacional' ? 'Con proyección internacional.' : 'Con alcance nacional.'} Objetivo principal: ${objetivo === 'ejecucion' ? 'financiar la ejecución del proyecto' : objetivo === 'prototipo' ? 'validar y prototipar la idea' : objetivo === 'difusion' ? 'difundir y distribuir' : 'financiar formación y capacitación'}.`;
+
+  // Determinar camino recomendado
+  let camino = 'Fondos CORFO + Capital Semilla';
+  if (ambito === 'cultura') camino = 'FONDART + Fondos de Cultura';
+  else if (ambito === 'ciencia') camino = 'ANID — FONDECYT + FONDEF';
+  else if (ambito === 'social' || entidad === 'ong') camino = 'FOSIS + Fondos Municipales';
+  else if (zona === 'regional') camino = 'FIC Regional + FNDR';
+  else if (monto === 'micro') camino = 'SERCOTEC + Fondos Municipales';
+
+  // Seleccionar tracks de fondos
+  const tracks = [];
+
+  // CORFO/Empresa
+  const corfoFondos = FONDOS.corfo.fondos[ambito] || FONDOS.corfo.fondos.empresa;
+  tracks.push({
+    id: 'corfo',
+    nombre: FONDOS.corfo.nombre,
+    icon: FONDOS.corfo.icon,
+    tema: FONDOS.corfo.tema,
+    match: ['empresa', 'ciencia'].includes(ambito) ? 'Alto' : 'Medio',
+    fondos: corfoFondos.slice(0, 2)
+  });
+
+  // Cultura
+  const cultFondos = FONDOS.cultura.fondos[ambito] || FONDOS.cultura.fondos.cultura;
+  tracks.push({
+    id: 'cultura',
+    nombre: FONDOS.cultura.nombre,
+    icon: FONDOS.cultura.icon,
+    tema: FONDOS.cultura.tema,
+    match: ambito === 'cultura' ? 'Alto' : 'Bajo',
+    fondos: cultFondos.slice(0, 2)
+  });
+
+  // Social
+  const socFondos = FONDOS.social.fondos[ambito] || FONDOS.social.fondos.social;
+  tracks.push({
+    id: 'social',
+    nombre: FONDOS.social.nombre,
+    icon: FONDOS.social.icon,
+    tema: FONDOS.social.tema,
+    match: ['social', 'educacion', 'ambiente'].includes(ambito) ? 'Alto' : 'Medio',
+    fondos: socFondos.slice(0, 2)
+  });
+
+  // Ciencia
+  const cienFondos = FONDOS.ciencia.fondos[ambito] || FONDOS.ciencia.fondos.ciencia;
+  tracks.push({
+    id: 'ciencia',
+    nombre: FONDOS.ciencia.nombre,
+    icon: FONDOS.ciencia.icon,
+    tema: FONDOS.ciencia.tema,
+    match: ['ciencia', 'empresa'].includes(ambito) ? 'Alto' : 'Medio',
+    fondos: cienFondos.slice(0, 2)
+  });
+
+  // Regional
+  tracks.push({
+    id: 'regional',
+    nombre: FONDOS.regional.nombre,
+    icon: FONDOS.regional.icon,
+    tema: FONDOS.regional.tema,
+    match: zona === 'regional' ? 'Alto' : 'Medio',
+    fondos: FONDOS.regional.fondos.todos.slice(0, 2)
+  });
+
+  return { perfil_resumen, camino_recomendado: camino, tracks };
+}
+
+function mostrarResultados(data) {
+  document.getElementById('loading-screen').classList.add('hidden');
+
+  let tracksHTML = '';
+  for (const track of data.tracks) {
+    const matchClass = track.match === 'Alto' ? 'match-alto' : track.match === 'Medio' ? 'match-medio' : 'match-bajo';
+    const cardsHTML = track.fondos.map(f => {
+      const fMatchClass = f.match === 'Alto' ? 'match-alto' : f.match === 'Medio' ? 'match-medio' : 'match-bajo';
+      return `
+        <div class="fondo-card">
+          <div class="fondo-card-stripe"></div>
+          <div class="fondo-top">
+            <div>
+              <div class="fondo-nombre">${f.nombre}</div>
+              <div class="fondo-org">${f.org}</div>
+            </div>
+            <span class="match-tag ${fMatchClass}">${f.match} match</span>
+          </div>
+          <div class="fondo-desc">${f.desc}</div>
+          <div class="fondo-chips">
+            ${f.monto ? `<span class="chip monto">💰 ${f.monto}</span>` : ''}
+            ${f.plazo ? `<span class="chip plazo">📅 ${f.plazo}</span>` : ''}
+            ${f.tipo ? `<span class="chip tipo">${f.tipo}</span>` : ''}
+            ${(f.chips || []).map(c => `<span class="chip">${c}</span>`).join('')}
+          </div>
+          ${f.link ? `<a class="fondo-link" href="${f.link}" target="_blank" rel="noopener">Ver convocatoria →</a>` : ''}
+        </div>
+      `;
+    }).join('');
+
+    tracksHTML += `
+      <div class="track-block ${track.tema}">
+        <div class="track-header">
+          <div class="track-icon">${track.icon}</div>
+          <div class="track-info">
+            <div class="track-name">${track.nombre}</div>
+            <div class="track-count">${track.fondos.length} fondos recomendados</div>
+          </div>
+          <span class="track-match-pill ${matchClass}">${track.match} match</span>
+        </div>
+        ${cardsHTML}
+      </div>
+    `;
+  }
+
+  const screen = document.getElementById('results-screen');
+  screen.innerHTML = `
+    <div class="results-top">
+      <div class="results-label">Tu mapa de fondos — Chile</div>
+      <div class="results-title">Estos son los fondos<br>para tu proyecto</div>
+      <div class="perfil-box">${data.perfil_resumen}</div>
+      <div class="camino-badge">✦ Camino recomendado: ${data.camino_recomendado}</div>
+    </div>
+    ${tracksHTML}
+    <div class="disclaimer">
+      Los fondos concursables tienen convocatorias con fechas específicas. Te recomendamos visitar directamente cada institución para verificar bases vigentes, plazos y requisitos actualizados. Esta herramienta es orientativa.
+    </div>
+    <button class="btn-restart" onclick="reiniciar()">↺ Volver a empezar</button>
+  `;
+  screen.classList.remove('hidden');
+}
+
+function reiniciar() {
+  paso = 0;
+  resp = {};
+  document.getElementById('results-screen').classList.add('hidden');
+  document.getElementById('loading-screen').classList.add('hidden');
+  document.getElementById('quiz-screen').classList.remove('hidden');
+  document.getElementById('progress-wrap').classList.remove('hidden');
+  mostrarPregunta(0);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+init();
+</script>
+</body>
+</html>
